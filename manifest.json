@@ -1,0 +1,32 @@
+{
+    "manifest_version": 3,
+    "name": "Full Page Screenshot",
+    "version": "1.0",
+    "description": "A simple extension to capture a full-page screenshot of any website.",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "storage",
+      "tabs"
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "images/favicon/favicon-16x16.png",
+        "48": "images/favicon/favicon-32x32.png",
+        "128": "images/favicon/android-chrome-192x192.png"
+      }
+    },
+    "icons": {
+      "16": "images/favicon/favicon-16x16.png",
+      "48": "images/favicon/favicon-32x32.png",
+      "128": "images/favicon/android-chrome-192x192.png"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self';"
+    }
+  }
+  

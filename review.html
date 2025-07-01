@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshot Review</title>
+    <link rel="stylesheet" href="styles/tailwind.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            z-index: 50;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 8px 0 rgba(31,41,55,0.08);
+        }
+        .main-content {
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-100 to-slate-100 dark:from-slate-800 dark:to-slate-900 text-slate-800 dark:text-slate-200">
+    <nav class="navbar flex items-center justify-between px-6 py-3 border-b border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+            <img src="images/favicon/android-chrome-192x192.png" alt="Logo" class="w-10 h-10 rounded-full shadow-md">
+            <span class="text-xl font-bold tracking-tight text-blue-700 dark:text-blue-300">Your Screenshot is Ready!</span>
+        </div>
+        <div class="flex gap-2">
+            <button id="downloadBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center gap-2">
+                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
+                Download Image
+            </button>
+            <button id="downloadPdfBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 flex items-center gap-2">
+                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Download PDF
+            </button>
+        </div>
+    </nav>
+    <div class="main-content flex flex-col items-center justify-center w-full">
+        <div id="imagePreviewContainer" class="w-full flex justify-center">
+            <div class="overflow-auto bg-white dark:bg-slate-800 rounded-lg shadow p-2 max-w-xl h-[calc(100vh-100px)] border border-slate-200 dark:border-slate-700 relative" style="touch-action: none;">
+                <img id="stitchedImage" src="" alt="Full Screenshot" class="block mx-auto select-none cursor-grab transition-transform duration-200" style="display:block;" draggable="false" />
+            </div>
+        </div>
+        <div id="loader" class="hidden w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mt-8"></div>
+    </div>
+    <canvas id="screenshotCanvas" style="display:none;"></canvas>
+    <footer class="w-full bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-8 py-3 px-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <div class="flex flex-wrap gap-3 items-center justify-center md:justify-start">
+            <a href="https://www.aakash4dev.com" target="_blank" rel="noopener" class="hover:underline">Profile</a>
+            <a href="https://www.github.com/aakash4dev" target="_blank" rel="noopener" class="hover:underline">GitHub</a>
+            <a href="https://www.linkedin.com/in/aakash4dev" target="_blank" rel="noopener" class="hover:underline">LinkedIn</a>
+            <a href="https://www.twitter.com/aakash4dev" target="_blank" rel="noopener" class="hover:underline">Twitter</a>
+            <a href="https://www.youtube.com/@aakash4dev" target="_blank" rel="noopener" class="hover:underline">YouTube</a>
+            <a href="https://medium.com/@aakash4dev" target="_blank" rel="noopener" class="hover:underline">Medium</a>
+            <a href="mailto:aakash4dev.me@gmail.com" class="hover:underline">Email</a>
+        </div>
+        <div class="flex flex-wrap gap-2 items-center justify-center md:justify-end">
+            <span>&copy; MIT</span>
+            <a href="https://github.com/aakash4dev/full-page-screenshot" target="_blank" rel="noopener" class="hover:underline">GitHub Repo</a>
+        </div>
+    </footer>
+    <script src="review.js"></script>
+    <script src="images/jspdf.umd.min.js"></script>
+</body>
+</html>
+

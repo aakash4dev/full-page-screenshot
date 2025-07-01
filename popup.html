@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Page Screenshot</title>
+    <link rel="stylesheet" href="styles/tailwind.min.css">
+    <style>
+        body {
+            width: 340px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+        }
+        .card {
+            border-radius: 0;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.15), 0 1.5px 6px 0 rgba(59, 130, 246, 0.08);
+            border-color: #60a5fa;
+        }
+        .sharp {
+            border-radius: 0 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-slate-100 dark:from-slate-800 dark:to-slate-900 text-slate-800 dark:text-slate-200">
+    <div class="card w-full max-w-xs mx-auto bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-2xl p-4 flex flex-col items-center hover:shadow-blue-200 sharp">
+        <div class="bg-gradient-to-br from-blue-200 to-blue-500 p-0.5 mb-2 shadow-lg sharp">
+            <img src="images/favicon/android-chrome-192x192.png" alt="Logo" class="w-12 h-12 shadow-md border-2 border-white dark:border-slate-800 sharp">
+        </div>
+        <h1 class="text-xl font-extrabold mb-1 tracking-tight text-blue-700 dark:text-blue-300">Full Page Screenshot</h1>
+        <p class="text-slate-600 dark:text-slate-400 mb-3 text-center text-sm">Capture a full-page screenshot of any website in one click.</p>
+        <button id="captureBtn" class="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold py-2 px-4 shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center gap-2 sharp">
+            <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+            <span id="btnText">Capture Full Page</span>
+        </button>
+        <p id="status" class="text-xs mt-2 h-4 text-center text-blue-600 dark:text-blue-300"></p>
+    </div>
+    <canvas id="screenshotCanvas" style="display:none;"></canvas>
+    <script src="popup.js"></script>
+</body>
+</html>
