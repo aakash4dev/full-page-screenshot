@@ -2,6 +2,8 @@
 
 ![Full Page Screenshot](./images/app-demo.png)
 
+https://chromewebstore.google.com/detail/full-page-screenshot/demfcmnjgmcoflaoobhjhioiomgecndb
+
 A clean, fast, and reliable Chrome extension to capture a full-page screenshot of any website with a single click. No ads, no bloat, just a perfect screenshot every time.
 
 ## ✨ Features
