@@ -18,7 +18,7 @@ A clean, fast, and reliable Chrome extension to capture a full-page screenshot o
 
 ### 1. Install from the Chrome Web Store (Recommended)
 
-[**Install the Extension from the Chrome Web Store**](https://chrome.google.com/webstore/)
+[**Install the Extension from the Chrome Web Store**]([https://chrome.google.com/webstore/](https://chromewebstore.google.com/detail/full-page-screenshot/demfcmnjgmcoflaoobhjhioiomgecndb))
 
 ### 2. Install for Development (from source)
 
