@@ -1,163 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Full Page Screenshot</title>
     <link rel="stylesheet" href="styles/tailwind.min.css">
     <style>
-        /* custom scrollbar for history if needed */
+        /* Modern Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
+
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: transparent;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 3px;
+            border-radius: 99px;
         }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
         body {
-            width: 350px;
-            height: 500px;
+            width: 360px;
+            height: 540px;
+            /* Slightly taller for the floating nav */
             overflow: hidden;
+            background-image:
+                radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 0% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 25%);
+        }
+
+        /* Nav Active Indicator */
+        .nav-btn.active {
+            color: #4f46e5;
+        }
+
+        .nav-btn.active svg {
+            filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.4));
+        }
+
+        /* Smooth Transitions */
+        .page-view {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) skewX(-15deg);
+            }
+
+            100% {
+                transform: translateX(200%) skewX(-15deg);
+            }
+        }
+
+        .animate-shine {
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes pulse-subtle {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.85;
+            }
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s infinite ease-in-out;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden flex flex-col h-full relative">
+
+<body
+    class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden flex flex-col h-full relative selection:bg-indigo-100 selection:text-indigo-700">
 
     <!-- Views Container -->
-    <div id="views-container" class="flex-1 overflow-y-auto pb-16">
-        
+    <div id="views-container" class="flex-1 overflow-y-auto pb-20 no-scrollbar">
+
         <!-- HOME PAGE -->
-        <div id="view-home" class="page-view flex flex-col items-center justify-center h-full p-6 space-y-6">
-            <div class="text-center">
-                 <img src="images/favicon/android-chrome-192x192.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 drop-shadow-lg rounded-xl">
-                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Full Page Shot</h1>
-                 <p class="text-slate-500 text-sm mt-1">Capture the entire web page.</p>
+        <div id="view-home" class="page-view flex flex-col items-center justify-center h-full p-8 pb-24 space-y-10">
+            <div class="text-center w-full">
+                <div class="relative inline-block group animate-float">
+                    <div
+                        class="absolute -inset-4 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700">
+                    </div>
+                    <img src="images/favicon/android-chrome-192x192.png" alt="Logo"
+                        class="relative w-24 h-24 mx-auto mb-6 transform transition-transform duration-500 hover:scale-105 active:scale-95 drop-shadow-md">
+                </div>
+                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+                    Full Page<br>
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 drop-shadow-sm">Screenshot</span>
+                </h1>
+                <p class="text-slate-500 font-medium text-base">Capture the web in one click.</p>
             </div>
-            
-            <button id="captureBtn" class="group relative w-full max-w-[240px] bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold py-4 px-6 rounded-2xl shadow-xl shadow-indigo-200 transition-all duration-200 flex items-center justify-center gap-3 overflow-hidden">
-                <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <svg id="cameraIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <svg id="spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
-                <span id="btnText" class="text-lg">Capture</span>
-            </button>
-            
-            <p id="status" class="text-xs font-medium text-indigo-500 h-4"></p>
+
+            <div class="w-full max-w-[280px] space-y-6">
+                <button id="captureBtn"
+                    class="group relative w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-3 overflow-hidden">
+
+
+
+                    <div class="relative z-10 flex items-center gap-3">
+                        <svg id="cameraIcon" class="w-6 h-6 transition-transform group-hover:scale-110 duration-200"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+
+                        <svg id="spinner" class="hidden animate-spin h-6 w-6 text-white"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+
+                        <span id="btnText" class="text-lg tracking-wide">Capture Page</span>
+                    </div>
+                </button>
+
+                <p id="status"
+                    class="text-xs font-semibold text-center text-indigo-500/80 h-4 opacity-0 transition-opacity duration-300">
+                </p>
+            </div>
         </div>
 
         <!-- HISTORY PAGE -->
-        <div id="view-history" class="page-view hidden p-4">
-            <h2 class="text-xl font-bold text-slate-900 mb-4 px-2">History</h2>
-            <div id="history-list" class="space-y-3">
-                <!-- History Items injected here -->
-                <div class="text-center text-slate-400 py-10">
-                    <p>No captures yet</p>
+        <div id="view-history" class="page-view hidden p-5 pt-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 px-1 flex items-center gap-2">
+                History
+                <span
+                    class="text-xs font-normal text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">Recent</span>
+            </h2>
+            <div id="history-list" class="space-y-3 pb-4">
+                <!-- History Items injected here or empty state -->
+                <div class="flex flex-col items-center justify-center py-12 text-center">
+                    <div class="bg-slate-100 p-4 rounded-full mb-4">
+                        <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <p class="text-slate-500 font-medium">No captures yet</p>
+                    <p class="text-slate-400 text-xs mt-1">Your snapshots will appear here</p>
                 </div>
             </div>
         </div>
 
         <!-- SETTINGS PAGE -->
-        <div id="view-settings" class="page-view hidden p-4">
-            <h2 class="text-xl font-bold text-slate-900 mb-6 px-2">Settings</h2>
-            <div class="space-y-6 px-2">
-                
+        <div id="view-settings" class="page-view hidden p-5 pt-8 pb-24">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6 px-1 flex items-center gap-2">
+                Settings
+                <div class="h-1.5 w-1.5 rounded-full bg-indigo-500"></div>
+            </h2>
+            <div class="space-y-4">
+
                 <!-- Format -->
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-slate-800">Image Format</p>
-                        <p class="text-xs text-slate-500">File type for captures</p>
+                <div
+                    class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-indigo-200 transition-colors">
+                    <div class="flex-1 min-w-0 mr-4">
+                        <p class="font-semibold text-slate-800 text-sm truncate">Image Format</p>
+                        <p class="text-xs text-slate-500 mt-0.5 truncate">File type for captures</p>
                     </div>
-                    <select id="setting-format" class="bg-white border border-slate-300 text-slate-700 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2">
-                        <option value="png">PNG</option>
-                        <option value="jpg">JPG</option>
-                    </select>
+                    <div class="relative shrink-0">
+                        <select id="setting-format"
+                            class="appearance-none bg-slate-50 border border-slate-200 text-slate-700 text-sm font-bold rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 block py-2 pl-3 pr-8 shadow-sm hover:bg-white transition-all cursor-pointer outline-none">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Delay -->
-                <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <label for="setting-delay" class="font-medium text-slate-800">Capture Delay</label>
-                        <span id="delay-val" class="text-sm text-indigo-600 font-bold">0s</span>
+                <div
+                    class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-200 transition-colors">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="min-w-0 mr-4">
+                            <p class="font-semibold text-slate-800 text-sm truncate">Capture Delay</p>
+                            <p class="text-xs text-slate-500 mt-0.5 truncate">Wait before scrolling</p>
+                        </div>
+                        <span id="delay-val"
+                            class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded shadow-sm border border-indigo-100 min-w-[2.5rem] text-center">0s</span>
                     </div>
-                     <input type="range" id="setting-delay" min="0" max="5" step="1" value="0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
-                </div>
-                
-                 <!-- Auto Download -->
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="font-medium text-slate-800">Auto Download</p>
-                        <p class="text-xs text-slate-500">Save immediately</p>
+                    <!-- Range Slider -->
+                    <div class="relative w-full h-6 flex items-center">
+                        <input type="range" id="setting-delay" min="0" max="5" step="1" value="0"
+                            class="w-full h-1.5 bg-slate-200 rounded-full appearance-none cursor-pointer outline-none slider-thumb">
                     </div>
-                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="setting-auto-download" class="sr-only peer" checked>
-                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                     </label>
+                    <style>
+                        /* Slider Thumb Customization */
+                        .slider-thumb::-webkit-slider-thumb {
+                            -webkit-appearance: none;
+                            appearance: none;
+                            width: 18px;
+                            height: 18px;
+                            background: #4f46e5;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            box-shadow: 0 0 0 2px white, 0 2px 4px rgba(0, 0, 0, 0.1);
+                            transition: transform 0.1s;
+                        }
+
+                        .slider-thumb::-webkit-slider-thumb:hover {
+                            transform: scale(1.1);
+                        }
+                    </style>
                 </div>
+
+
+
             </div>
         </div>
 
         <!-- ABOUT PAGE -->
-        <div id="view-about" class="page-view hidden p-6 flex flex-col h-full">
-            <h2 class="text-xl font-bold text-slate-900 mb-6">About</h2>
-            
-            <div class="flex-1 flex flex-col items-center text-center space-y-4">
-                <div class="bg-indigo-50 p-4 rounded-full mb-2">
-                    <img src="images/favicon/android-chrome-192x192.png" class="w-16 h-16 rounded-lg sharp">
+        <div id="view-about" class="page-view hidden p-6 pt-10 pb-24 flex flex-col h-full">
+            <div class="flex-1 flex flex-col items-center pt-2 space-y-8">
+                <!-- Icon -->
+                <div class="relative animate-float">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-full blur-xl opacity-30">
+                    </div>
+                    <img src="images/favicon/android-chrome-192x192.png"
+                        class="relative w-24 h-24 drop-shadow-md hover:scale-105 transition-transform duration-500">
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-slate-800">Full Page Shot</h3>
-                    <p class="text-slate-500 text-sm">Version 1.0.1</p>
+
+                <div class="text-center space-y-2">
+                    <h3 class="font-bold text-2xl text-slate-900 tracking-tight">Full Page Shot</h3>
+                    <div class="flex items-center justify-center gap-2">
+                        <span
+                            class="px-3 py-1 bg-gradient-to-r from-slate-100 to-slate-50 text-slate-600 text-[10px] font-bold rounded-full uppercase tracking-widest border border-slate-200 shadow-sm animate-pulse-subtle">
+                            Version 1.0.3
+                        </span>
+                    </div>
                 </div>
-                
-                <div class="w-full pt-6 space-y-3">
-                    <a href="privacy-policy.html" target="_blank" class="block w-full py-3 px-4 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors text-left flex justify-between items-center group">
-                        Privacy Policy
-                        <svg class="w-4 h-4 text-slate-400 group-hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+
+                <div class="w-full space-y-4 pt-2">
+                    <a href="https://github.com/aakash4dev/full-page-screenshot" target="_blank"
+                        class="block w-full p-4 bg-white/60 backdrop-blur-sm border border-white shadow-sm ring-1 ring-slate-100 rounded-2xl hover:bg-white hover:ring-indigo-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-slate-700 font-medium text-sm flex justify-between items-center group">
+                        <span class="flex items-center gap-4">
+                            <span
+                                class="p-2.5 bg-slate-900 text-white rounded-xl group-hover:bg-slate-800 transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            GitHub Repo
+                        </span>
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-indigo-50 transition-colors">
+                            <svg class="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                </path>
+                            </svg>
+                        </div>
                     </a>
-                     <a href="review.html" target="_blank" class="block w-full py-3 px-4 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-700 font-medium text-sm transition-colors text-left flex justify-between items-center group">
-                        Rate this extension
-                        <svg class="w-4 h-4 text-slate-400 group-hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+
+                    <a href="https://chromewebstore.google.com/detail/full-page-screenshot/demfcmnjgmcoflaoobhjhioiomgecndb"
+                        target="_blank"
+                        class="block w-full p-4 bg-white/60 backdrop-blur-sm border border-white shadow-sm ring-1 ring-slate-100 rounded-2xl hover:bg-white hover:ring-amber-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-slate-700 font-medium text-sm flex justify-between items-center group">
+                        <span class="flex items-center gap-4">
+                            <span
+                                class="p-2.5 bg-amber-50 text-amber-500 rounded-xl group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                                    </path>
+                                </svg>
+                            </span>
+                            Rate Extension
+                        </span>
+                        <div
+                            class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-amber-50 transition-colors">
+                            <svg class="w-4 h-4 text-slate-400 group-hover:text-amber-500 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                </path>
+                            </svg>
+                        </div>
                     </a>
                 </div>
             </div>
-            
-            <div class="text-center mt-auto pt-6 border-t border-slate-100">
-                <p class="text-xs text-slate-400">© 2026 Full Page Shot</p>
+
+            <div class="text-center mt-auto">
+                <p class="text-[10px] text-slate-400 font-medium tracking-wide">© 2026 Full Page Shot</p>
             </div>
         </div>
 
     </div>
 
     <!-- Bottom Navigation -->
-    <div id="bottom-nav" class="fixed bottom-0 left-0 w-full h-16 bg-white border-t border-slate-200 grid grid-cols-4 items-center px-2 z-10">
+    <div id="bottom-nav"
+        class="fixed bottom-6 left-4 right-4 h-[68px] bg-white/80 backdrop-blur-xl border border-white/40 shadow-xl shadow-slate-200/60 rounded-2xl grid grid-cols-4 items-center px-1 z-50 ring-1 ring-slate-900/5 items-center justify-items-center">
         <!-- Dashboard Button -->
-        <button class="nav-btn flex flex-col items-center justify-center space-y-1 text-indigo-600" data-target="view-home">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            <span class="text-[10px] font-medium">Home</span>
+        <button
+            class="nav-btn w-full h-full rounded-xl group active flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-300 relative"
+            data-target="view-home">
+            <svg class="w-6 h-6 transition-transform group-active:scale-95 group-hover:scale-110 duration-300 group-[.active]:text-indigo-600 group-[.active]:scale-110"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                </path>
+            </svg>
+            <span
+                class="text-[9px] font-bold tracking-wider opacity-70 group-[.active]:opacity-100 group-[.active]:text-indigo-600">HOME</span>
         </button>
-        
+
         <!-- History Button -->
-        <button class="nav-btn flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-slate-600" data-target="view-history">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-             <span class="text-[10px] font-medium">History</span>
+        <button
+            class="nav-btn w-full h-full rounded-xl group flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-300 relative"
+            data-target="view-history">
+            <svg class="w-6 h-6 transition-transform group-active:scale-95 group-hover:scale-110 duration-300 group-[.active]:text-indigo-600 group-[.active]:scale-110"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span
+                class="text-[9px] font-bold tracking-wider opacity-70 group-[.active]:opacity-100 group-[.active]:text-indigo-600">HISTORY</span>
         </button>
 
         <!-- Settings Button -->
-        <button class="nav-btn flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-slate-600" data-target="view-settings">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-             <span class="text-[10px] font-medium">Settings</span>
+        <button
+            class="nav-btn w-full h-full rounded-xl group flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-300 relative"
+            data-target="view-settings">
+            <svg class="w-6 h-6 transition-transform group-active:scale-95 group-hover:scale-110 duration-300 group-[.active]:text-indigo-600 group-[.active]:scale-110"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span
+                class="text-[9px] font-bold tracking-wider opacity-70 group-[.active]:opacity-100 group-[.active]:text-indigo-600">SETTINGS</span>
         </button>
 
         <!-- About Button -->
-        <button class="nav-btn flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-slate-600" data-target="view-about">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-             <span class="text-[10px] font-medium">About</span>
+        <button
+            class="nav-btn w-full h-full rounded-xl group flex flex-col items-center justify-center space-y-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-300 relative"
+            data-target="view-about">
+            <svg class="w-6 h-6 transition-transform group-active:scale-95 group-hover:scale-110 duration-300 group-[.active]:text-indigo-600 group-[.active]:scale-110"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span
+                class="text-[9px] font-bold tracking-wider opacity-70 group-[.active]:opacity-100 group-[.active]:text-indigo-600">ABOUT</span>
         </button>
     </div>
 
     <canvas id="screenshotCanvas" style="display:none;"></canvas>
     <script src="popup.js"></script>
 </body>
+
 </html>

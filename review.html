@@ -1,77 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Screenshot Review</title>
     <link rel="stylesheet" href="styles/tailwind.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            font-family: system-ui, -apple-system, sans-serif;
         }
+
         .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            z-index: 50;
-            background: rgba(255,255,255,0.95);
-            box-shadow: 0 2px 8px 0 rgba(31,41,55,0.08);
-        }
-        .main-content {
-            margin-top: 80px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-indigo-100 to-slate-100 dark:from-slate-800 dark:to-slate-900 text-slate-800 dark:text-slate-200">
-    <nav class="navbar flex items-center justify-between px-6 py-3 border-b border-slate-200 dark:border-slate-700">
-        <div class="flex items-center gap-3">
-            <img src="images/favicon/android-chrome-192x192.png" alt="Logo" class="w-10 h-10">
-            <span class="text-xl font-bold tracking-tight text-blue-700 dark:text-blue-300">Your Screenshot is Ready🥳!</span>
-        </div>
-        <div class="flex gap-2">
-            <button id="downloadBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center gap-2">
-                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>
-                Download Image
-            </button>
-            <button id="downloadPdfBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 flex items-center gap-2">
-                <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-                Download PDF
-            </button>
-        </div>
-    </nav>
-    <div class="main-content flex flex-col items-center justify-center w-full">
-        <div id="imagePreviewContainer" class="w-full flex justify-center">
-            <div class="overflow-auto bg-white dark:bg-slate-800 rounded-lg shadow p-2 max-w-xl h-[calc(100vh-100px)] border border-slate-200 dark:border-slate-700 relative" style="touch-action: none;">
-                <img id="stitchedImage" src="" alt="Full Screenshot" class="block mx-auto select-none cursor-grab transition-transform duration-200" style="display:block;" draggable="false" />
+
+<body class="min-h-screen bg-slate-50 text-slate-800 selection:bg-indigo-100 selection:text-indigo-700 font-sans">
+
+    <!-- Navbar -->
+    <nav
+        class="navbar fixed top-0 left-0 right-0 z-50 bg-white/80 border-b border-slate-200/60 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <img src="images/favicon/android-chrome-192x192.png" alt="Logo"
+                        class="w-8 h-8 drop-shadow-sm hover:scale-105 transition-transform duration-200">
+                    <span class="text-lg font-bold tracking-tight text-slate-900">
+                        Screenshot <span class="text-indigo-600">Review</span>
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button id="downloadBtn"
+                        class="group relative inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white transition-all duration-200 bg-indigo-600 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"></path>
+                        </svg>
+                        Download Image
+                    </button>
+
+                    <button id="downloadPdfBtn"
+                        class="group inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-slate-700 transition-all duration-200 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-200 shadow-sm hover:shadow hover:-translate-y-0.5">
+                        <svg class="w-4 h-4 mr-2 text-slate-400 group-hover:text-indigo-600 transition-colors"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        Download PDF
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="loader" class="hidden w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mt-8"></div>
-    </div>
-    <canvas id="screenshotCanvas" style="display:none;"></canvas>
-    <footer class="w-full bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 mt-8 py-3 px-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
-        <div class="flex flex-wrap gap-3 items-center justify-center md:justify-start">
-            <a href="https://www.aakash4dev.com" target="_blank" rel="noopener" class="hover:underline">Profile</a>
-            <a href="https://www.github.com/aakash4dev" target="_blank" rel="noopener" class="hover:underline">GitHub</a>
-            <a href="https://www.linkedin.com/in/aakash4dev" target="_blank" rel="noopener" class="hover:underline">LinkedIn</a>
-            <a href="https://www.twitter.com/aakash4dev" target="_blank" rel="noopener" class="hover:underline">Twitter</a>
-            <a href="https://www.youtube.com/@aakash4dev" target="_blank" rel="noopener" class="hover:underline">YouTube</a>
-            <a href="https://medium.com/@aakash4dev" target="_blank" rel="noopener" class="hover:underline">Medium</a>
-            <a href="mailto:aakash4dev.me@gmail.com" class="hover:underline">Email</a>
-            <a href="privacy-policy.html" target="_blank" rel="noopener" class="hover:underline">Privacy Policy</a>
-            <a href="https://coff.ee/aakash4dev" target="_blank" rel="noopener" class="hover:underline">Buy Me a Coffee</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 flex flex-col items-center justify-center min-h-[calc(100vh-60px)]">
+
+        <!-- Canvas Container -->
+        <div id="imagePreviewContainer" class="w-full max-w-5xl flex justify-center perspective-[1000px]">
+            <!-- Loading State -->
+            <div id="loader" class="hidden flex flex-col items-center justify-center py-20">
+                <div class="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-slate-500 font-medium animate-pulse">Processing capture...</p>
+            </div>
+
+            <!-- Image Wrapper -->
+            <div
+                class="relative w-full overflow-auto bg-white rounded-2xl shadow-2xl border border-slate-100 p-1 max-h-[80vh] group">
+                <div
+                    class="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-black/5 to-transparent z-10 pointer-events-none">
+                </div>
+                <img id="stitchedImage" src="" alt="Full Screenshot" class="block mx-auto max-w-full h-auto shadow-sm"
+                    style="display:block;" draggable="false" />
+            </div>
         </div>
-        <div class="flex flex-wrap gap-2 items-center justify-center md:justify-end">
-            <span>&copy; MIT</span>
-            <a href="https://github.com/aakash4dev/full-page-screenshot" target="_blank" rel="noopener" class="hover:underline">GitHub Repo</a>
+
+        <p
+            class="mt-6 text-sm text-slate-400 flex items-center gap-1.5 bg-white px-3 py-1 rounded-full border border-slate-100 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Hold <kbd class="font-sans font-semibold text-slate-500">Ctrl</kbd> + Scroll to Zoom
+        </p>
+
+    </main>
+
+    <canvas id="screenshotCanvas" style="display:none;"></canvas>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 mt-auto">
+        <div
+            class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p class="text-slate-400 text-sm">
+                &copy; 2026 Full Page Shot. MIT License.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-6">
+                <a href="https://github.com/aakash4dev/full-page-screenshot" target="_blank"
+                    class="text-slate-500 hover:text-indigo-600 text-sm font-medium transition-colors">GitHub</a>
+                <a href="privacy-policy.html" target="_blank"
+                    class="text-slate-500 hover:text-indigo-600 text-sm font-medium transition-colors">Privacy</a>
+                <a href="https://www.twitter.com/aakash4dev" target="_blank"
+                    class="text-slate-500 hover:text-indigo-600 text-sm font-medium transition-colors">Twitter</a>
+            </div>
         </div>
     </footer>
+
     <script src="review.js"></script>
     <script src="images/jspdf.umd.min.js"></script>
 </body>
-</html>
 
+</html>

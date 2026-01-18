@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadBtn.disabled = true;
     downloadPdfBtn.disabled = true;
 
-    // Retrieve the captured image chunks from storage
-    chrome.storage.local.get('capturedChunks', async (result) => {
+    // Retrieve chunks and settings
+    chrome.storage.local.get(['capturedChunks', 'settings'], async (result) => {
         chunks = result.capturedChunks;
+        const settings = result.settings || {};
+
         if (!chunks || chunks.length === 0) {
             console.error("No screenshot data found.");
             loader.classList.add('hidden');
@@ -63,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             downloadBtn.disabled = false;
             downloadPdfBtn.disabled = false;
 
+
+
         } catch (error) {
             console.error("Error processing images:", error);
             alert("An error occurred while creating the final image.");
@@ -70,18 +74,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle download full image button click
-    downloadBtn.addEventListener('click', () => {
+    function downloadImage() {
         const dataURL = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = dataURL;
         const date = new Date();
         const timestamp = date.toISOString().replace(/[:.]/g, '-');
-        link.download = `screenshot-${timestamp}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
+        const filename = `screenshot-${timestamp}.png`;
+
+        if (chrome.downloads) {
+            chrome.downloads.download({
+                url: dataURL,
+                filename: filename,
+                saveAs: false // Auto download without prompt if possible
+            });
+        } else {
+            // Fallback
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+
+    // Handle download full image button click
+    downloadBtn.addEventListener('click', downloadImage);
 
     // Handle download PDF button click
     downloadPdfBtn.addEventListener('click', () => {

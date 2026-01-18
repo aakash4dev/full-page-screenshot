@@ -37,8 +37,15 @@ async function captureFullPage(sendResponse) {
                 sendResponse({ status: "error", message: chrome.runtime.lastError.message });
                 return;
             }
-            
+
             if (response && response.status === "complete") {
+                // Save to history
+                addToHistory({
+                    url: tab.url,
+                    title: tab.title,
+                    timestamp: Date.now()
+                });
+
                 // Open the review page in a new tab
                 chrome.tabs.create({ url: 'review.html' });
                 sendResponse({ status: "complete" });
@@ -51,4 +58,14 @@ async function captureFullPage(sendResponse) {
         console.error("Failed to capture full page:", error);
         sendResponse({ status: "error", message: error.message });
     }
+}
+
+function addToHistory(item) {
+    chrome.storage.local.get(['captureHistory'], (result) => {
+        const history = result.captureHistory || [];
+        history.unshift(item); // Add to beginning
+        // Limit to 50 items
+        if (history.length > 50) history.pop();
+        chrome.storage.local.set({ captureHistory: history });
+    });
 }
